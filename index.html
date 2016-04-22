@@ -1,0 +1,104 @@
+<!-- 
+	Here is the coding done all in one page.
+	Break Out is a game where a bunch of bricks are lines up at the top.
+	Like pong, you control a bottom platform to bounce a ball up to hit the bricks.
+	Once all bricks are destroyed, you win.
+-->
+
+<!-- Let browser know what document to expect -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!--
+			Specifies the character encoding for the HTML document
+			The more widely a character encoding is used, the better
+			chance the browser will understand it.
+			UTF = Unicode transformation format
+		-->
+		<meta charset="utf-8"/>
+		<title>Gamedev Workshop: Break Out!</title>
+		<style>
+			<!-- selects all element -->
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			canvas {
+				background: #eee;
+				display: block;
+				margin: 0 auto;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Create canvas to display game -->
+		<canvas id="myCanvas" width="480" height="320"></canvas>
+		
+		<script>
+			// Javascript will go here
+			var canvas = document.getElementById("myCanvas");
+			// ctx means "context", which is the tool used to draw on canvas
+			var ctx = canvas.getContext("2d");
+			
+			/*
+				All steps are done between beginPath() & closePath().
+				
+				Start creating the ball first:
+				
+				The code below creates a circle.
+				arc defines a circle: arc(push from left(x), push from top(y), radius, start angle, end angle, direction of drawing )
+				The last parameter is optional, and is a boolean in which false = clockwise(default) & true = anti-clockwise.
+				
+				ctx.arc(240, 160, 20, 0, Math.PI*2);		
+				
+				fillStyle = fills the shape with color
+				strokeStyle = fills the outer shape with color				
+				
+				rect defines the rectangle: rect(push from left, push from top, width, height)
+				
+				ctx.beginPath();
+				ctx.rect(20, 40, 50, 50);
+				ctx.fillStyle = "#FF0000";
+				ctx.fill();
+				ctx.closePath();
+			*/
+
+			var x = canvas.width/2;
+			var y = canvas.height-30;
+			// Show 5, then 2
+			// The higher the number, the faster it goes
+			var dx = 2;
+			var dy = -2;
+			var ballRadius = 10;
+			
+			function drawBall() {
+				ctx.beginPath();
+				ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+				ctx.fillStyle = "#0095DD";
+				ctx.fill();
+				ctx.closePath();
+			}
+			
+			function draw() {
+				// where your drawing loop will occur
+				// takes 4 parameters: x, y of top left corner + x, y of bottom right corner. Anytihng within gets cleared.
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				drawBall();
+				
+				if(x + dx > canvas.width-ballRadius || x + dx < ballRadius) {
+					dx = -dx;
+				}
+				if(y + dy > canvas.height-ballRadius || y + dy < ballRadius) {
+					dy = -dy;
+				}
+				
+				// Add small values for each frame for movement
+				x += dx;
+				y += dy;
+			}
+			
+			// setInterval(function, milliseconds)
+			setInterval(draw, 10);
+		</script>
+	</body>
+</html>
